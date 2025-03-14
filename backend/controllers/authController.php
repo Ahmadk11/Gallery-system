@@ -1,22 +1,22 @@
 <?php
-
 include_once 'config/database.php';
 include_once 'models/user.php';
 include_once 'utils/response.php';
 include_once 'utils/validator.php';
 
 class AuthController {
-
+    private $db;
+    
+    public function __construct() {
+        $database = new Database();
+        $this->db = $database->getConnection();
+    }
+    
     private function generateToken($userId) {
-        $issuedAt = time();
-        $expirationTime = $issuedAt + 3600;
-        
         $payload = [
             'user_id' => $userId,
-            'iat' => $issuedAt,
-            'exp' => $expirationTime
+            'exp' => time() + 3600
         ];
-        
         return base64_encode(json_encode($payload));
     }
     
@@ -27,7 +27,6 @@ class AuthController {
         }
         
         $data = json_decode(file_get_contents("php://input"), true);
-        
         $errors = Validator::validateRegistration($data);
         
         if(!empty($errors)) {
@@ -35,18 +34,15 @@ class AuthController {
             return;
         }
         
-        $database = new Database();
-        $db = $database->getConnection();
-        
-        $user = new User($db);
-        
+        $user = new User($this->db);
         $user->email = $data['email'];
+        $user->username = $data['username'];
+        
         if($user->emailExists()) {
             Response::error("Email already exists", 400);
             return;
         }
         
-        $user->username = $data['username'];
         if($user->usernameExists()) {
             Response::error("Username already exists", 400);
             return;
@@ -54,14 +50,8 @@ class AuthController {
         
         if($user->register($data['username'], $data['email'], $data['password'])) {
             $token = $this->generateToken($user->id);
-            
-            $userData = $user->getUserData();
-            
             Response::success(
-                [
-                    "user" => $userData,
-                    "token" => $token
-                ],
+                ["user" => $user->getUserData(), "token" => $token],
                 "User registered successfully",
                 201
             );
@@ -77,7 +67,6 @@ class AuthController {
         }
         
         $data = json_decode(file_get_contents("php://input"), true);
-        
         $errors = Validator::validateLogin($data);
         
         if(!empty($errors)) {
@@ -85,21 +74,12 @@ class AuthController {
             return;
         }
         
-        $database = new Database();
-        $db = $database->getConnection();
-        
-        $user = new User($db);
+        $user = new User($this->db);
         
         if($user->login($data['email'], $data['password'])) {
             $token = $this->generateToken($user->id);
-            
-            $userData = $user->getUserData();
-            
             Response::success(
-                [
-                    "user" => $userData,
-                    "token" => $token
-                ],
+                ["user" => $user->getUserData(), "token" => $token],
                 "Login successful"
             );
         } else {
@@ -121,32 +101,20 @@ class AuthController {
         }
         
         $token = $matches[1];
+        $payload = json_decode(base64_decode($token), true);
         
-        try {
-            $payload = json_decode(base64_decode($token), true);
-            
-            if (!isset($payload['exp']) || $payload['exp'] < time()) {
-                Response::error("Token has expired", 401);
-                return;
-            }
-            
-            $database = new Database();
-            $db = $database->getConnection();
-            
-            $user = new User($db);
-            $user->id = $payload['user_id'];
-            
-            if ($user->readOne()) {
-                Response::success(
-                    ["user" => $user->getUserData()],
-                    "User is authenticated"
-                );
-            } else {
-                Response::error("Invalid user", 401);
-            }
-            
-        } catch (Exception $e) {
-            Response::error("Invalid token", 401);
+        if (!isset($payload['exp']) || $payload['exp'] < time()) {
+            Response::error("Token has expired", 401);
+            return;
+        }
+        
+        $user = new User($this->db);
+        $user->id = $payload['user_id'];
+        
+        if ($user->readOne()) {
+            Response::success(["user" => $user->getUserData()], "User is authenticated");
+        } else {
+            Response::error("Invalid user", 401);
         }
     }
 }
