@@ -8,50 +8,79 @@ const handleResponse = async (response) => {
   return response.json();
 };
 
+const getAuthHeader = () => {
+  const token = localStorage.getItem('auth_token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
+
 const api = {
-  get: async (endpoint) => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  get: async (endpoint, customConfig = {}) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...getAuthHeader(),
+      ...customConfig.headers
+    };
+    
+    const config = {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
+      ...customConfig,
+      headers
+    };
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     return handleResponse(response);
   },
 
-  post: async (endpoint, data) => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  post: async (endpoint, data, customConfig = {}) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...getAuthHeader(),
+      ...customConfig.headers
+    };
+    
+    const config = {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
+      ...customConfig,
+      headers,
+      body: JSON.stringify(data)
+    };
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     return handleResponse(response);
   },
 
-  put: async (endpoint, data) => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  put: async (endpoint, data, customConfig = {}) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...getAuthHeader(),
+      ...customConfig.headers
+    };
+    
+    const config = {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
+      ...customConfig,
+      headers,
+      body: JSON.stringify(data)
+    };
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     return handleResponse(response);
   },
 
-  delete: async (endpoint) => {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+  delete: async (endpoint, customConfig = {}) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...getAuthHeader(),
+      ...customConfig.headers
+    };
+    
+    const config = {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
+      ...customConfig,
+      headers
+    };
+    
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
     return handleResponse(response);
   },
 };

@@ -17,6 +17,7 @@ $api_endpoints = [
     'users/register' => ['controller' => 'AuthController', 'method' => 'register'],
     'users/login' => ['controller' => 'AuthController', 'method' => 'login'],
     'users/logout' => ['controller' => 'AuthController', 'method' => 'logout'],
+    'users/check-auth' => ['controller' => 'AuthController', 'method' => 'checkAuth'],
     'users/profile' => ['controller' => 'UserController', 'method' => 'getProfile'],
     'users/update' => ['controller' => 'UserController', 'method' => 'updateProfile'],
     'photos' => ['controller' => 'PhotoController', 'method' => 'getAll'],
