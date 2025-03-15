@@ -6,8 +6,8 @@ const photoService = {
     return api.post('photos/upload', photoData);
   },
   
-  getAllPhotos: async (page = 1, limit = 10) => {
-    return api.get(`photos?page=${page}&limit=${limit}`);
+  getAllPhotos: async () => {
+    return api.get('photos');
   },
   
   getPhoto: async (id) => {
