@@ -78,21 +78,10 @@ class PhotoController {
         }
         
         $photo = new Photo($this->db);
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
-        
-        $photos = $photo->getAllPhotos($page, $limit);
-        $totalPhotos = $photo->getTotalCount();
-        $totalPages = ceil($totalPhotos / $limit);
+        $photos = $photo->getAllPhotos();
         
         Response::success([
-            "photos" => $photos,
-            "pagination" => [
-                "total" => $totalPhotos,
-                "pages" => $totalPages,
-                "current" => $page,
-                "limit" => $limit
-            ]
+            "photos" => $photos
         ]);
     }
     
