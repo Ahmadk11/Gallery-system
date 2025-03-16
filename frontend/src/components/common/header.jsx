@@ -17,21 +17,21 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="header-content">
-          <Link to="/" className="logo">
+          <Link to="/" className="logo app-link">
             Photo Gallery
           </Link>
           
           <nav className="nav-links">
-            <Link to="/">Gallery</Link>
+            <Link to="/" className="app-link">Gallery</Link>
             
             {isLoggedIn ? (
               <>
-                <Link to="/upload">Upload</Link>
-                <Link to="/profile">{user?.username || 'Profile'}</Link>
-                <button onClick={handleLogout} className="btn-link">Logout</button>
+                <Link to="/upload" className="app-link">Upload</Link>
+                <Link to="/profile" className="app-link">{user?.username || 'Profile'}</Link>
+                <button onClick={handleLogout} className="btn-link app-button">Logout</button>
               </>
             ) : (
-              <Link to="/auth">Login / Register</Link>
+              <Link to="/auth" className="app-link">Login / Register</Link>
             )}
           </nav>
         </div>

@@ -80,7 +80,7 @@ const RegisterForm = ({ onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="auth-form">
       {errors.general && <div className="error-message mb-3">{errors.general}</div>}
       
       <div className="form-group">
@@ -135,7 +135,7 @@ const RegisterForm = ({ onSuccess }) => {
         {errors.confirm_password && <div className="error-message">{errors.confirm_password}</div>}
       </div>
       
-      <button type="submit" className="btn btn-block" disabled={isLoading}>
+      <button type="submit" className="btn btn-block app-button" disabled={isLoading}>
         {isLoading ? 'Registering...' : 'Register'}
       </button>
     </form>

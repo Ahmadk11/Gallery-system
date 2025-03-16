@@ -15,7 +15,7 @@ const UploadPage = () => {
   return (
     <div className="container">
       <div className="upload-container">
-        <h2>Upload Photo</h2>
+        <h2 className="upload-title">Upload Photo</h2>
         <PhotoUploadForm />
       </div>
     </div>

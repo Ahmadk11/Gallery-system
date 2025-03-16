@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const PhotoCard = ({ photo }) => {
   return (
     <div className="photo-card">
-      <Link to={`/photo/${photo.id}`}>
+      <Link to={`/photo/${photo.id}`} className="app-link">
         <img 
           src={`data:image/jpeg;base64,${photo.image_data}`} 
           alt={photo.title}

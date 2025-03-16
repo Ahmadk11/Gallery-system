@@ -64,7 +64,7 @@ const LoginForm = ({ onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="auth-form">
       {errors.general && <div className="error-message mb-3">{errors.general}</div>}
       
       <div className="form-group">
@@ -93,7 +93,7 @@ const LoginForm = ({ onSuccess }) => {
         {errors.password && <div className="error-message">{errors.password}</div>}
       </div>
       
-      <button type="submit" className="btn btn-block" disabled={isLoading}>
+      <button type="submit" className="btn btn-block app-button" disabled={isLoading}>
         {isLoading ? 'Logging in...' : 'Log In'}
       </button>
     </form>

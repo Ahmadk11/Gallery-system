@@ -38,7 +38,7 @@ const AuthPage = () => {
     return (
       <div className="container">
         <div className="auth-container">
-          <p className="text-center">Loading...</p>
+          <p className="text-center loading">Loading...</p>
         </div>
       </div>
     );
@@ -57,9 +57,9 @@ const AuthPage = () => {
         
         <div className="auth-switch mt-3">
           {isLogin ? (
-            <p>Don't have an account? <button onClick={toggleAuthMode} className="btn-link">Register</button></p>
+            <p>Don't have an account? <button onClick={toggleAuthMode} className="btn-link app-button">Register</button></p>
           ) : (
-            <p>Already have an account? <button onClick={toggleAuthMode} className="btn-link">Login</button></p>
+            <p>Already have an account? <button onClick={toggleAuthMode} className="btn-link app-button">Login</button></p>
           )}
         </div>
       </div>
