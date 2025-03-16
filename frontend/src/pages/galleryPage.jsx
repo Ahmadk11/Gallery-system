@@ -37,7 +37,7 @@ const GalleryPage = () => {
       <div className="container">
         <div className="gallery-container">
           <div className="gallery-header">
-            <h1>Photo Gallery</h1>
+            <h1 className="gallery-title">Photo Gallery</h1>
           </div>
           
           {error && <div className="error-message">{error}</div>}

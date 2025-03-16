@@ -139,7 +139,7 @@ const PhotoUploadForm = () => {
         </div>
       )}
       
-      <button type="submit" className="btn btn-block mt-3" disabled={isLoading}>
+      <button type="submit" className="btn btn-block mt-3 app-button" disabled={isLoading}>
         {isLoading ? 'Uploading...' : 'Upload Photo'}
       </button>
     </form>
